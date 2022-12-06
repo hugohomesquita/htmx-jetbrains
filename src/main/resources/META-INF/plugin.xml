@@ -1,18 +1,20 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.hugohomesquita.htmxjetbrains</id>
-    <name>IntelliJ Platform Plugin htmx-jetbrains</name>
-    <vendor>hugohomesquita</vendor>
+    <name>HTMX Support</name>
+
+    <vendor url="https://twitter.com/hugohomesquita">
+        Hugo Mesquita
+    </vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.xml</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.hugohomesquita.htmxjetbrains.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.hugohomesquita.htmxjetbrains.services.MyProjectService"/>
+        <xml.attributeDescriptorsProvider implementation="com.github.hugohomesquita.htmxjetbrains.AttributesProvider"/>
+        <completion.contributor language="HTML"
+                                implementationClass="com.github.hugohomesquita.htmxjetbrains.HtmxCompletionContributor"
+                                id="HtmxCompletionContributor"/>
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.hugohomesquita.htmxjetbrains.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
 </idea-plugin>
