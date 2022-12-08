@@ -2,10 +2,28 @@
 
 # htmx-jetbrains Changelog
 
-## [0.0.2]
+## [Unreleased]
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
 ### Fixed
+
+### Security
+
+## [0.0.2]
+
+### Fixed
+
 - Added icon to plugin
 
 ## [0.0.1]
+
 ### Added
+
 - Auto-complete for attributes
