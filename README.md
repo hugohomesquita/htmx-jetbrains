@@ -1,8 +1,9 @@
 # htmx-jetbrains
 
 ![Build](https://github.com/hugohomesquita/htmx-jetbrains/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
+[![Version](https://img.shields.io/jetbrains/plugin/v/20588-htmx-support)](https://plugins.jetbrains.com/plugin/20588-htmx-support)
+[![Downloads](https://img.shields.io/jetbrains/plugin/v/20588-htmx-support)](https://plugins.jetbrains.com/plugin/20588-htmx-support)
+![Release](https://github.com/hugohomesquita/htmx-jetbrains/workflows/Release/badge.svg)
 
 ## Release Workflow
 
