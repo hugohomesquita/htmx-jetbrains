@@ -4,15 +4,15 @@ import com.intellij.psi.html.HtmlTag
 
 class AutoCompleteSuggestions(val htmlTag: HtmlTag, val partialAttribute: String) {
 
-    val descriptors: MutableList<AttributeInfo> = mutableListOf()
+    val attributes: MutableList<AttributeInfo> = mutableListOf()
 
     init {
         addAttributes()
     }
 
     private fun addAttributes() {
-        for (directive in AttributeUtil.attributes) {
-            descriptors.add(AttributeInfo(directive))
+        for (attribute in AttributeUtil.attributes) {
+            attributes.add(AttributeInfo(attribute))
         }
     }
 }

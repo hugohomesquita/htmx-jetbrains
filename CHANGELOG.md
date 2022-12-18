@@ -16,6 +16,12 @@
 
 ### Security
 
+## [0.0.3]
+
+### Added
+
+- Added auto-completion with default values of `hx-target` and id css selectors
+
 ## [0.0.2]
 
 ### Fixed

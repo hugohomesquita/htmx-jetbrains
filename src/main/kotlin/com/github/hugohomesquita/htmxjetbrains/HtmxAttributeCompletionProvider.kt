@@ -35,14 +35,8 @@ class HtmxAttributeCompletionProvider(vararg items: String) : CompletionProvider
 
         val suggestions = AutoCompleteSuggestions(xmlTag, partialAttribute)
 
-        suggestions.descriptors.forEach {
-            var text = it.attribute
-
-            // If you go back and add a modifier, it ignores the prefix, so we'll
-            // just kinda code around that for now
-            if (text.contains(':') && text.contains('.')) {
-                text = text.substringAfter(':')
-            }
+        suggestions.attributes.forEach {
+            val text = it.attribute
 
             var elementBuilder = LookupElementBuilder
                 .create(text)

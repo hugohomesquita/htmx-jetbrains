@@ -41,13 +41,10 @@ class AttributeInfo(val attribute: String) {
 
     val name: String
 
-    val prefix: String
-
     val typeText: String
 
     init {
-        prefix = extractPrefix()
-        name = attribute.substring(prefix.length).substringBefore('.')
+        name = attribute
         typeText = buildTypeText()
     }
 
@@ -62,11 +59,6 @@ class AttributeInfo(val attribute: String) {
 
     fun hasValue(): Boolean {
         return name != ""
-    }
-
-    @Suppress("ReturnCount")
-    private fun extractPrefix(): String {
-        return ""
     }
 
     @Suppress("ReturnCount")
