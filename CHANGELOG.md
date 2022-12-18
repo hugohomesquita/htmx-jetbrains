@@ -16,6 +16,12 @@
 
 ### Security
 
+## [0.0.4]
+
+### Added
+
+- Added auto-completion with default values of `hx-swap`
+
 ## [0.0.3]
 
 ### Added
