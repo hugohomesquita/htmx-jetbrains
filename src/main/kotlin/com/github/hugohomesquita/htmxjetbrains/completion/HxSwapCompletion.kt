@@ -23,10 +23,10 @@ class HxSwapCompletion : CompletionProvider<CompletionParameters?>() {
         val options = hashMapOf(
             "innerHTML" to "The default, replace the inner html of the target element",
             "outerHTML" to "Replace the entire target element with the response",
-            "beforeBegin" to "Insert the response before the target element",
-            "afterBegin" to "Insert the response before the first child of the target element",
-            "beforeEnd" to "Insert the response after the last child of the target element",
-            "afterEnd" to "Insert the response after the target element",
+            "beforebegin" to "Insert the response before the target element",
+            "afterbegin" to "Insert the response before the first child of the target element",
+            "beforeend" to "Insert the response after the last child of the target element",
+            "afterend" to "Insert the response after the target element",
             "delete" to "Deletes the target element regardless of the response",
             "none" to "Does not append content from response (out of band items will still be processed)."
         )
