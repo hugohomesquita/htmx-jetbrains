@@ -16,6 +16,12 @@
 
 ### Security
 
+## [0.0.5]
+
+### Fixed
+
+- Fix capitalization of `hx-swap`
+
 ## [0.0.4]
 
 ### Added
