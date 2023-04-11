@@ -16,6 +16,12 @@
 
 ### Security
 
+## [0.0.6]
+
+### Fixed
+
+- Support IntelliJ 2023.1
+
 ## [0.0.5]
 
 ### Fixed
