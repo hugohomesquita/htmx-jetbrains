@@ -59,10 +59,12 @@ class HxTargetCompletion : CompletionProvider<CompletionParameters?>() {
             if (id != null) {
                 val idValue = id.valueElement?.value
                 if (idValue != null) {
+                    val prefix = if (position.text.startsWith("#")) "" else "#" // if the user already typed #, don't add it again
                     result.addElement(
                         LookupElementBuilder
-                            .create("#$idValue")
+                            .create("$prefix$idValue")
                             .withIcon(Htmx.ICON)
+                            .withTypeText("id of ${it.name}")
                     )
                 }
             }
