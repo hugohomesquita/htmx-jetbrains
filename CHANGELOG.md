@@ -16,6 +16,12 @@
 
 ### Security
 
+## [0.0.7]
+
+### Fixed
+
+- Fix hx-target code completion inserts double # #3
+
 ## [0.0.6]
 
 ### Fixed
