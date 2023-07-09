@@ -16,6 +16,16 @@
 
 ### Security
 
+## [0.0.8]
+
+### Added
+
+- Add support for `hx-on` attribute
+
+### Fixed
+
+- Fix supported build number ranges and IntelliJ Platform versions
+
 ## [0.0.7]
 
 ### Fixed
