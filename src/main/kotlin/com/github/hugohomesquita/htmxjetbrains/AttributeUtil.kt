@@ -5,6 +5,7 @@ object AttributeUtil {
         "hx-boost",
         "hx-get",
         "hx-post",
+        "hx-on",
         "hx-push-url",
         "hx-select",
         "hx-select-oob",
