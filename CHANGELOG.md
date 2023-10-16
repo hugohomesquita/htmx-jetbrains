@@ -16,6 +16,12 @@
 
 ### Security
 
+## [0.0.9]
+
+### Added
+
+- Add support for `hx-disabled-elt` attribute
+
 ## [0.0.8]
 
 ### Added

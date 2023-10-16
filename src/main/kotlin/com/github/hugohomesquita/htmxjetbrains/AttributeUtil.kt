@@ -17,6 +17,7 @@ object AttributeUtil {
         "hx-confirm",
         "hx-delete",
         "hx-disable",
+        "hx-disabled-elt",
         "hx-disinherit",
         "hx-encoding",
         "hx-ext",
