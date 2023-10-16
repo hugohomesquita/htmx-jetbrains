@@ -18,7 +18,7 @@ class AttributeInfo(val attribute: String) {
         "hx-confirm" to "Shows a confim() dialog before issuing a request",
         "hx-delete" to "Issues a DELETE to the specified URL",
         "hx-disable" to "Disables htmx processing for the given node and any children nodes",
-        "hx-disabled-elt" to "\tadds the disabled attribute to the specified elements while a request is in flight",
+        "hx-disabled-elt" to "Adds the disabled attribute to the specified elements while a request is in flight",
         "hx-disinherit" to "Control and disable automatic attribute inheritance for child nodes",
         "hx-encoding" to "Changes the request encoding type",
         "hx-ext" to "Extensions to use for this element",
