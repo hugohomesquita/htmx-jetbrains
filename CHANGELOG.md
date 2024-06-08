@@ -16,6 +16,12 @@
 
 ### Security
 
+## [0.0.10]
+
+### Changed
+
+- Improved support for `hx-swap-oob` attribute
+
 ## [0.0.9]
 
 ### Added
