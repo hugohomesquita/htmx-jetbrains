@@ -3,8 +3,7 @@
 # - run 'test' and 'verifyPlugin' tasks,
 # - run Qodana inspections,
 # - run 'buildPlugin' task and prepare artifact for the further tests,
-# - run 'runPluginVerifier' task,
-# - create a draft release.
+# - run 'runPluginVerifier' task.
 #
 # Workflow is triggered on push and pull_request events.
 #
@@ -30,7 +29,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.properties.outputs.version }}
-      changelog: ${{ steps.properties.outputs.changelog }}
     steps:
 
       # Free GitHub Actions Environment Disk Space
@@ -63,14 +61,9 @@ jobs:
           PROPERTIES="$(./gradlew properties --console=plain -q)"
           VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"
           NAME="$(echo "$PROPERTIES" | grep "^pluginName:" | cut -f2- -d ' ')"
-          CHANGELOG="$(./gradlew getChangelog --unreleased --no-header --console=plain -q)"
-          CHANGELOG="${CHANGELOG//'%'/'%25'}"
-          CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
-          CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
 
           echo "::set-output name=version::$VERSION"
           echo "::set-output name=name::$NAME"
-          echo "::set-output name=changelog::$CHANGELOG"
           echo "::set-output name=pluginVerifierHomeDir::~/.pluginVerifier"
 
           ./gradlew listProductsReleases # prepare list of IDEs for Plugin Verifier
@@ -133,40 +126,3 @@ jobs:
         with:
           name: ${{ steps.artifact.outputs.filename }}
           path: ./build/distributions/content/*/*
-
-  # Prepare a draft release for GitHub Releases page for the manual verification
-  # If accepted and published, release workflow would be triggered
-  releaseDraft:
-    name: Release Draft
-    if: github.event_name != 'pull_request'
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-
-      # Check out current repository
-      - name: Fetch Sources
-        uses: actions/checkout@v3
-
-      # Remove old release drafts by using the curl request for the available releases with draft flag
-      - name: Remove Old Release Drafts
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh api repos/{owner}/{repo}/releases \
-            --jq '.[] | select(.draft == true) | .id' \
-            | xargs -I '{}' gh api -X DELETE repos/{owner}/{repo}/releases/{}
-
-      # Create new release draft - which is not publicly visible and requires manual acceptance
-      - name: Create Release Draft
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create v${{ needs.build.outputs.version }} \
-            --draft \
-            --title "v${{ needs.build.outputs.version }}" \
-            --notes "$(cat << 'EOM'
-          ${{ needs.build.outputs.changelog }}
-          EOM
-          )"

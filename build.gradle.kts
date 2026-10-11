@@ -1,7 +1,8 @@
-import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 
 fun properties(key: String) = project.findProperty(key).toString()
+
+val pluginVersion = file("version.txt").readText().trim()
 
 plugins {
     // Java support
@@ -19,7 +20,7 @@ plugins {
 }
 
 group = properties("pluginGroup")
-version = properties("pluginVersion")
+version = pluginVersion
 
 // Configure project's dependencies
 repositories {
@@ -41,12 +42,6 @@ intellij {
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
 }
 
-// Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
-changelog {
-    groups.set(emptyList())
-    repositoryUrl.set(properties("pluginRepositoryUrl"))
-}
-
 // Configure Gradle Qodana Plugin - read more: https://github.com/JetBrains/gradle-qodana-plugin
 qodana {
     cachePath.set(file(".qodana").canonicalPath)
@@ -66,7 +61,7 @@ tasks {
     }
 
     patchPluginXml {
-        version.set(properties("pluginVersion"))
+        version.set(pluginVersion)
         sinceBuild.set(properties("pluginSinceBuild"))
         untilBuild.set(properties("pluginUntilBuild"))
 
@@ -83,14 +78,13 @@ tasks {
             }.joinToString("\n").let { markdownToHTML(it) }
         )
 
-        // Get the latest available change notes from the changelog file
         changeNotes.set(provider {
-            with(changelog) {
-                renderItem(
-                    getOrNull(properties("pluginVersion")) ?: getLatest(),
-                    Changelog.OutputType.HTML,
-                )
-            }
+            file("CHANGELOG.md").readText().lines()
+                .dropWhile { !it.startsWith("## ") }.drop(1)
+                .takeWhile { !it.startsWith("## ") }
+                .joinToString("\n")
+                .replace(Regex("""\s*\(\[[0-9a-f]{7,40}]\([^)]*\)\)"""), "")
+                .let { markdownToHTML(it) }
         })
     }
 
@@ -110,11 +104,10 @@ tasks {
     }
 
     publishPlugin {
-        dependsOn("patchChangelog")
         token.set(System.getenv("PUBLISH_TOKEN"))
         // pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
         // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
-        channels.set(listOf(properties("pluginVersion").split('-').getOrElse(1) { "default" }.split('.').first()))
+        channels.set(listOf(pluginVersion.split('-').getOrElse(1) { "default" }.split('.').first()))
     }
 }
