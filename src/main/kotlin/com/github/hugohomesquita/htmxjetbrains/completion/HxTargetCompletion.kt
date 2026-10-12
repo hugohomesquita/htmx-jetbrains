@@ -49,9 +49,46 @@ class HxTargetCompletion : CompletionProvider<CompletionParameters?>() {
                         "will target the first child descendant row to the element)"
             )
 
+        val findAllElement = LookupElementBuilder
+            .create("findAll ")
+            .withIcon(Htmx.ICON)
+            .withTypeText(
+                "findAll <CSS selector> which will find all child descendant elements " +
+                        "that match the given CSS selector (htmx 4)"
+            )
+
+        val nextElement = LookupElementBuilder
+            .create("next")
+            .withIcon(Htmx.ICON)
+            .withTypeText(
+                "next which targets the next sibling element, or next <CSS selector> " +
+                        "which scans forward through the DOM for the first match"
+            )
+
+        val previousElement = LookupElementBuilder
+            .create("previous")
+            .withIcon(Htmx.ICON)
+            .withTypeText(
+                "previous which targets the previous sibling element, or previous <CSS selector> " +
+                        "which scans backward through the DOM for the first match"
+            )
+
         result.addElement(PrioritizedLookupElement.withPriority(thisElement, 1.0))
         result.addElement(PrioritizedLookupElement.withPriority(closestElement, 1.0))
         result.addElement(PrioritizedLookupElement.withPriority(findElement, 1.0))
+        result.addElement(PrioritizedLookupElement.withPriority(findAllElement, 1.0))
+        result.addElement(PrioritizedLookupElement.withPriority(nextElement, 1.0))
+        result.addElement(PrioritizedLookupElement.withPriority(previousElement, 1.0))
+
+        val globalSelectors = linkedMapOf(
+            "body" to "The document body (htmx 4)",
+            "document" to "The document (htmx 4)",
+            "window" to "The window (htmx 4)",
+            "host" to "The shadow root host, useful inside a web component (htmx 4)",
+        )
+        globalSelectors.forEach { (key, value) ->
+            result.addElement(LookupElementBuilder.create(key).withIcon(Htmx.ICON).withTypeText(value))
+        }
 
         val allTags = PsiTreeUtil.findChildrenOfType(position.containingFile, HtmlTag::class.java)
         allTags.forEach {

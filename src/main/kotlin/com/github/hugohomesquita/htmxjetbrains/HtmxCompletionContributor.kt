@@ -1,5 +1,6 @@
 package com.github.hugohomesquita.htmxjetbrains
 
+import com.github.hugohomesquita.htmxjetbrains.completion.HxMethodCompletion
 import com.github.hugohomesquita.htmxjetbrains.completion.HxSwapCompletion
 import com.github.hugohomesquita.htmxjetbrains.completion.HxSwapOobCompletion
 import com.github.hugohomesquita.htmxjetbrains.completion.HxTargetCompletion
@@ -36,6 +37,13 @@ class HtmxCompletionContributor : CompletionContributor() {
                 .psiElement(XmlTokenType.XML_ATTRIBUTE_VALUE_TOKEN)
                 .inside(XmlPatterns.xmlAttribute("hx-swap-oob")),
             HxSwapOobCompletion()
+        )
+        extend(
+            CompletionType.BASIC,
+            PlatformPatterns
+                .psiElement(XmlTokenType.XML_ATTRIBUTE_VALUE_TOKEN)
+                .inside(XmlPatterns.xmlAttribute("hx-method")),
+            HxMethodCompletion()
         )
     }
 }
