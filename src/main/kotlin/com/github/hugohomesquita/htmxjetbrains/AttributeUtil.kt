@@ -53,4 +53,21 @@ object AttributeUtil {
         "hx-vars",
         "hx-ws",
     )
+
+    val statusAttributes = arrayOf(
+        "hx-status:4xx",
+        "hx-status:5xx",
+        "hx-status:404",
+        "hx-status:500",
+    )
+
+    private val statusAttributePattern = Regex("hx-status:(\\d{3}|\\d{2}x|\\dxx)")
+
+    fun isStatusAttribute(name: String): Boolean {
+        return statusAttributePattern.matches(name)
+    }
+
+    fun statusCode(name: String): String? {
+        return statusAttributePattern.matchEntire(name)?.groupValues?.get(1)
+    }
 }

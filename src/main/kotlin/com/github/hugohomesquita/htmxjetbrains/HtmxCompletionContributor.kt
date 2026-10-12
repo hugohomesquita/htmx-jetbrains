@@ -1,12 +1,14 @@
 package com.github.hugohomesquita.htmxjetbrains
 
 import com.github.hugohomesquita.htmxjetbrains.completion.HxMethodCompletion
+import com.github.hugohomesquita.htmxjetbrains.completion.HxStatusCompletion
 import com.github.hugohomesquita.htmxjetbrains.completion.HxSwapCompletion
 import com.github.hugohomesquita.htmxjetbrains.completion.HxSwapOobCompletion
 import com.github.hugohomesquita.htmxjetbrains.completion.HxTargetCompletion
 import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType
 import com.intellij.patterns.PlatformPatterns
+import com.intellij.patterns.StandardPatterns
 import com.intellij.patterns.XmlPatterns
 import com.intellij.psi.xml.XmlTokenType
 
@@ -44,6 +46,13 @@ class HtmxCompletionContributor : CompletionContributor() {
                 .psiElement(XmlTokenType.XML_ATTRIBUTE_VALUE_TOKEN)
                 .inside(XmlPatterns.xmlAttribute("hx-method")),
             HxMethodCompletion()
+        )
+        extend(
+            CompletionType.BASIC,
+            PlatformPatterns
+                .psiElement(XmlTokenType.XML_ATTRIBUTE_VALUE_TOKEN)
+                .inside(XmlPatterns.xmlAttribute().withName(StandardPatterns.string().startsWith("hx-status"))),
+            HxStatusCompletion()
         )
     }
 }

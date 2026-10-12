@@ -81,7 +81,7 @@ class AttributeInfo(val attribute: String) {
     }
 
     fun isAttribute(): Boolean {
-        return AttributeUtil.attributes.contains(name)
+        return AttributeUtil.attributes.contains(name) || AttributeUtil.isStatusAttribute(name)
     }
 
     fun hasValue(): Boolean {
@@ -90,6 +90,19 @@ class AttributeInfo(val attribute: String) {
 
     @Suppress("ReturnCount")
     private fun buildTypeText(): String {
+        val statusCode = AttributeUtil.statusCode(name)
+        if (statusCode != null) {
+            return buildStatusTypeText(statusCode)
+        }
         return typeTexts.getOrDefault(name, "Htmx")
+    }
+
+    private fun buildStatusTypeText(statusCode: String): String {
+        val matches = when {
+            statusCode.endsWith("xx") -> "any ${statusCode.first()}xx response"
+            statusCode.endsWith("x") -> "responses ${statusCode.dropLast(1)}0-${statusCode.dropLast(1)}9"
+            else -> "a $statusCode response"
+        }
+        return "Handles $matches with key:value settings, e.g. swap:none target:#errors (htmx 4)"
     }
 }
