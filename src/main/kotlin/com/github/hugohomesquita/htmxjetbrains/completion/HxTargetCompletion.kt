@@ -90,13 +90,16 @@ class HxTargetCompletion : CompletionProvider<CompletionParameters?>() {
             result.addElement(LookupElementBuilder.create(key).withIcon(Htmx.ICON).withTypeText(value))
         }
 
+        val prefixStart = parameters.offset - result.prefixMatcher.prefix.length
+        val hashTyped = prefixStart > 0 && parameters.editor.document.charsSequence[prefixStart - 1] == '#'
+
         val allTags = PsiTreeUtil.findChildrenOfType(position.containingFile, HtmlTag::class.java)
         allTags.forEach {
             val id = it.getAttribute("id")
             if (id != null) {
                 val idValue = id.valueElement?.value
                 if (idValue != null) {
-                    val prefix = if (position.text.startsWith("#")) "" else "#" // if the user already typed #, don't add it again
+                    val prefix = if (hashTyped) "" else "#" // if the user already typed #, don't add it again
                     result.addElement(
                         LookupElementBuilder
                             .create("$prefix$idValue")

@@ -56,6 +56,18 @@ class HtmxCompletionTest : BasePlatformTestCase() {
         )
     }
 
+    fun testHxTargetIdAfterHashCompletes() {
+        complete("<div id=\"result\"></div><button hx-target=\"#res<caret>\"></button>")
+
+        myFixture.checkResult("<div id=\"result\"></div><button hx-target=\"#result\"></button>")
+    }
+
+    fun testHxTargetIdAfterExtendedSelectorCompletes() {
+        complete("<div id=\"result\"></div><button hx-target=\"closest #res<caret>\"></button>")
+
+        myFixture.checkResult("<div id=\"result\"></div><button hx-target=\"closest #result\"></button>")
+    }
+
     fun testHxMethodValues() {
         val lookups = complete("<form hx-action=\"/x\" hx-method=\"<caret>\"></form>")
 
