@@ -1,20 +1,4 @@
-<!-- Keep a Changelog guide -> https://keepachangelog.com -->
-
 # htmx-jetbrains Changelog
-
-## [Unreleased]
-
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 
 ## [0.0.10]
 
