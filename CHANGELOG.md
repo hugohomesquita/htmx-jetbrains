@@ -1,5 +1,13 @@
 # htmx-jetbrains Changelog
 
+## [0.1.0](https://github.com/hugohomesquita/htmx-jetbrains/compare/v0.0.10...v0.1.0) (2026-10-12)
+
+
+### Features
+
+* add htmx 4 attribute and value completion ([#19](https://github.com/hugohomesquita/htmx-jetbrains/issues/19)) ([6a39f0b](https://github.com/hugohomesquita/htmx-jetbrains/commit/6a39f0b42a36543f4211f962b5f641932603461a))
+* navigate from hx-target id selectors to the target element ([#21](https://github.com/hugohomesquita/htmx-jetbrains/issues/21)) ([1cadf55](https://github.com/hugohomesquita/htmx-jetbrains/commit/1cadf5570d44548dde4b326747c1afa246f6cbba))
+
 ## [0.0.10]
 
 ### Changed
