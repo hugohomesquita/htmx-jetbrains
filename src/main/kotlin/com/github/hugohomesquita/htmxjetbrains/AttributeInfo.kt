@@ -38,8 +38,6 @@ class AttributeInfo(val attribute: String) {
         "hx-config" to "Configures request behavior per element, as key:value (HCON) or JSON, " +
                 "e.g. timeout:5s (htmx 4, replaces hx-request)",
         "hx-ignore" to "Disables htmx processing for the given node and any children nodes (htmx 4, was hx-disable)",
-        "hx-status" to "Handles responses by status code, exact or wildcard, " +
-                "e.g. hx-status:404=\"swap:none\" or hx-status:5xx=\"target:#errors\" (htmx 4)",
         "hx-morph-skip" to "Freezes an element during a morph swap (htmx 4)",
         "hx-morph-skip-children" to "Morphs an element's attributes but keeps its children (htmx 4)",
         "hx-preload" to "Preloads content before the user triggers a request (htmx 4 extension)",
@@ -81,7 +79,7 @@ class AttributeInfo(val attribute: String) {
     }
 
     fun isAttribute(): Boolean {
-        return AttributeUtil.attributes.contains(name)
+        return AttributeUtil.attributes.contains(name) || AttributeUtil.isStatusAttribute(name)
     }
 
     fun hasValue(): Boolean {
@@ -90,6 +88,19 @@ class AttributeInfo(val attribute: String) {
 
     @Suppress("ReturnCount")
     private fun buildTypeText(): String {
+        val statusCode = AttributeUtil.statusCode(name)
+        if (statusCode != null) {
+            return buildStatusTypeText(statusCode)
+        }
         return typeTexts.getOrDefault(name, "Htmx")
+    }
+
+    private fun buildStatusTypeText(statusCode: String): String {
+        val matches = when {
+            statusCode.endsWith("xx") -> "any ${statusCode.first()}xx response"
+            statusCode.endsWith("x") -> "responses ${statusCode.dropLast(1)}0-${statusCode.dropLast(1)}9"
+            else -> "a $statusCode response"
+        }
+        return "Handles $matches with key:value settings, e.g. swap:none target:#errors (htmx 4)"
     }
 }

@@ -1,5 +1,7 @@
 package com.github.hugohomesquita.htmxjetbrains
 
+import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.xml.XmlAttribute
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 
 class HtmxCompletionTest : BasePlatformTestCase() {
@@ -16,7 +18,7 @@ class HtmxCompletionTest : BasePlatformTestCase() {
         assertContainsElements(
             lookups,
             "hx-get", "hx-post", "hx-swap", "hx-target",
-            "hx-query", "hx-action", "hx-method", "hx-config", "hx-ignore", "hx-status",
+            "hx-query", "hx-action", "hx-method", "hx-config", "hx-ignore",
             "hx-morph-skip", "hx-morph-skip-children", "hx-preload", "hx-pending",
         )
     }
@@ -60,5 +62,91 @@ class HtmxCompletionTest : BasePlatformTestCase() {
         val lookups = complete("<form hx-action=\"/x\" hx-method=\"<caret>\"></form>")
 
         assertContainsElements(lookups, "GET", "POST", "PUT", "PATCH", "DELETE", "QUERY")
+    }
+
+    fun testAttributeCompletionIncludesHxStatusCodes() {
+        val lookups = complete("<div hx-<caret>></div>")
+
+        assertContainsElements(
+            lookups,
+            "hx-status:2xx", "hx-status:201", "hx-status:4xx", "hx-status:404", "hx-status:422",
+            "hx-status:5xx", "hx-status:50x", "hx-status:500",
+        )
+        assertDoesntContain(lookups, "hx-status", "hx-status:204", "hx-status:304")
+    }
+
+    fun testAttributeCompletionOnHxStatusPrefix() {
+        val lookups = complete("<div hx-status<caret>></div>")
+
+        assertContainsElements(lookups, "hx-status:4xx", "hx-status:5xx", "hx-status:404", "hx-status:500")
+    }
+
+    fun testAttributeCompletionAfterHxStatusColon() {
+        val lookups = complete("<div hx-status:4<caret>></div>")
+
+        assertContainsElements(lookups, "hx-status:4xx", "hx-status:404")
+        assertDoesntContain(lookups, "hx-status:201", "hx-status:5xx", "hx-status:500")
+    }
+
+    fun testHxStatusValues() {
+        val lookups = complete("<div hx-status:404=\"<caret>\"></div>")
+
+        assertContainsElements(lookups, "swap:", "target:", "select:", "push:", "replace:", "transition:")
+    }
+
+    fun testHxStatusWildcardValues() {
+        val lookups = complete("<div hx-status:5xx=\"<caret>\"></div>")
+
+        assertContainsElements(lookups, "swap:", "target:", "select:", "push:", "replace:", "transition:")
+    }
+
+    fun testHxStatusInheritedValues() {
+        val lookups = complete("<div hx-status:404:inherited=\"<caret>\"></div>")
+
+        assertContainsElements(lookups, "swap:", "target:")
+    }
+
+    fun testHxStatusKeysAfterAnotherPair() {
+        val lookups = complete("<div hx-status:404=\"swap:none t<caret>\"></div>")
+
+        assertContainsElements(lookups, "target:", "transition:")
+        assertDoesntContain(lookups, "swap:")
+    }
+
+    fun testHxStatusSwapValues() {
+        val lookups = complete("<div hx-status:404=\"swap:<caret>\"></div>")
+
+        assertContainsElements(lookups, "innerHTML", "outerHTML", "none")
+        assertDoesntContain(lookups, "swap:", "target:")
+    }
+
+    fun testHxStatusBooleanValues() {
+        val lookups = complete("<div hx-status:201=\"push:<caret>\"></div>")
+
+        assertContainsElements(lookups, "true", "false")
+        assertDoesntContain(lookups, "swap:")
+    }
+
+    fun testHxStatusValuesNotOfferedOnLookalikeAttributes() {
+        assertDoesntContain(complete("<div hx-statusbar=\"<caret>\"></div>"), "swap:")
+        assertDoesntContain(complete("<div hx-status=\"<caret>\"></div>"), "swap:")
+    }
+
+    fun testHxStatusAttributeIsRecognized() {
+        myFixture.configureByText("test.html", "<div hx-status:404=\"swap:none\" hx-status:50x=\"select:#x\"></div>")
+        val attributes = PsiTreeUtil.findChildrenOfType(myFixture.file, XmlAttribute::class.java)
+
+        assertEquals(listOf("hx-status:404", "hx-status:50x"), attributes.map { it.name })
+        attributes.forEach {
+            assertTrue(it.name, it.descriptor is HtmxAttributeDescriptor)
+        }
+        assertFalse(AttributeInfo("hx-status:abc").isHtmx())
+        assertFalse(AttributeInfo("hx-status").isHtmx())
+        assertFalse(AttributeInfo("hx-status:999").isHtmx())
+        assertFalse(AttributeInfo("hx-status:0xx").isHtmx())
+        assertTrue(AttributeInfo("hx-status:5XX").isHtmx())
+        assertTrue(AttributeInfo("hx-status:404:inherited").isHtmx())
+        assertTrue(AttributeInfo("hx-status:4xx:append").isHtmx())
+        assertTrue(AttributeInfo("hx-status:40x:inherited:append").isHtmx())
     }
 }

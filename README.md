@@ -20,6 +20,8 @@ This plugin adds support for the following [htmx](https://github.com/bigskysoftw
 - Auto-complete htmx attributes such as `hx-get`, including the htmx 4 attributes
   (`hx-action`, `hx-method`, `hx-query`, `hx-config`, `hx-ignore`, `hx-status`, ...)
 - Auto-complete values for `hx-swap`, `hx-swap-oob`, `hx-target` and `hx-method`
+- Auto-complete `hx-status:<code>` attributes (`hx-status:404`, `hx-status:5xx`, ...) and their
+  `swap:`, `target:`, `select:`, `push:`, `replace:` and `transition:` keys
 
 <!-- Plugin description end -->
 

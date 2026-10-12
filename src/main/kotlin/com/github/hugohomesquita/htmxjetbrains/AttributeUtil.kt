@@ -35,7 +35,6 @@ object AttributeUtil {
         "hx-method",
         "hx-config",
         "hx-ignore",
-        "hx-status",
         "hx-morph-skip",
         "hx-morph-skip-children",
         "hx-preload",
@@ -53,4 +52,38 @@ object AttributeUtil {
         "hx-vars",
         "hx-ws",
     )
+
+    val statusAttributes = arrayOf(
+        "hx-status:2xx",
+        "hx-status:200",
+        "hx-status:201",
+        "hx-status:4xx",
+        "hx-status:400",
+        "hx-status:401",
+        "hx-status:403",
+        "hx-status:404",
+        "hx-status:409",
+        "hx-status:422",
+        "hx-status:429",
+        "hx-status:5xx",
+        "hx-status:50x",
+        "hx-status:500",
+        "hx-status:502",
+        "hx-status:503",
+    )
+
+    const val STATUS_ATTRIBUTE_REGEX = "(?i)hx-status:([1-5](?:\\d{2}|\\dx|xx))(?::inherited)?(?::append)?"
+
+    private val statusAttributePattern = Regex(STATUS_ATTRIBUTE_REGEX)
+
+    fun isStatusAttribute(name: String): Boolean {
+        return statusCode(name) != null
+    }
+
+    fun statusCode(name: String): String? {
+        if (!name.startsWith("hx-status:", ignoreCase = true)) {
+            return null
+        }
+        return statusAttributePattern.matchEntire(name)?.groupValues?.get(1)?.lowercase()
+    }
 }
