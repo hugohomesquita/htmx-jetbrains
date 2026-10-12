@@ -38,8 +38,6 @@ class AttributeInfo(val attribute: String) {
         "hx-config" to "Configures request behavior per element, as key:value (HCON) or JSON, " +
                 "e.g. timeout:5s (htmx 4, replaces hx-request)",
         "hx-ignore" to "Disables htmx processing for the given node and any children nodes (htmx 4, was hx-disable)",
-        "hx-status" to "Handles responses by status code, exact or wildcard, " +
-                "e.g. hx-status:404=\"swap:none\" or hx-status:5xx=\"target:#errors\" (htmx 4)",
         "hx-morph-skip" to "Freezes an element during a morph swap (htmx 4)",
         "hx-morph-skip-children" to "Morphs an element's attributes but keeps its children (htmx 4)",
         "hx-preload" to "Preloads content before the user triggers a request (htmx 4 extension)",

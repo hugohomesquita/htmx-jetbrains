@@ -16,5 +16,7 @@
         <completion.contributor language="HTML"
                                 implementationClass="com.github.hugohomesquita.htmxjetbrains.HtmxCompletionContributor"
                                 id="HtmxCompletionContributor"/>
+        <lang.inspectionSuppressor language="HTML"
+                                   implementationClass="com.github.hugohomesquita.htmxjetbrains.HtmxInspectionSuppressor"/>
     </extensions>
 </idea-plugin>

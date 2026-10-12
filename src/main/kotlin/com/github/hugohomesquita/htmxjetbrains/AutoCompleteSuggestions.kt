@@ -11,11 +11,6 @@ class AutoCompleteSuggestions(val htmlTag: HtmlTag, val partialAttribute: String
     }
 
     private fun addAttributes() {
-        for (attribute in AttributeUtil.attributes) {
-            attributes.add(AttributeInfo(attribute))
-        }
-        for (attribute in AttributeUtil.statusAttributes) {
-            attributes.add(AttributeInfo(attribute))
-        }
+        (AttributeUtil.attributes + AttributeUtil.statusAttributes).mapTo(attributes) { AttributeInfo(it) }
     }
 }

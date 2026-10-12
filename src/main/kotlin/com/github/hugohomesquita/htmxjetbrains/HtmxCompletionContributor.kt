@@ -51,7 +51,7 @@ class HtmxCompletionContributor : CompletionContributor() {
             CompletionType.BASIC,
             PlatformPatterns
                 .psiElement(XmlTokenType.XML_ATTRIBUTE_VALUE_TOKEN)
-                .inside(XmlPatterns.xmlAttribute().withName(StandardPatterns.string().startsWith("hx-status"))),
+                .inside(XmlPatterns.xmlAttribute().withName(StandardPatterns.string().matches(AttributeUtil.STATUS_ATTRIBUTE_REGEX))),
             HxStatusCompletion()
         )
     }
